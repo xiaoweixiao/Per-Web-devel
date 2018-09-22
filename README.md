@@ -1,2 +1,7 @@
-# First_Git_Code
-Today is the first day of github.
+#include<stdio.h>
+
+int main()
+{
+	printf("Goodby CSDN and Hello GitHub!!!!");
+	return 0;
+}
