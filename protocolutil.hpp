@@ -27,23 +27,23 @@ class ProtocolUtil{
 public:
     static void MakeKV(std::unordered_map<std::string,std::string> &kv_,std::string &str_)
     {
-        std::size_t pos_ = str.find(": ");
+        std::size_t pos_ = str_.find(": ");
         if(std::string::npos ==pos_){
             return;
         }
 
-        std::string k_ = str_substr(0,pos_);
-        std::string v_ = str_substr(pos+2);
+        std::string k_ = str_.substr(0,pos_);
+        std::string v_ = str_.substr(pos_+2);
 
         kv_insert(make_pair(k_,v_));
     }
     static std::string IntToString(int code)
     {
-        stringstream ss;
+        std::stringstream ss;
         ss << code;
         return ss.str();
     }
-    static std::stding CodetoDesc(int code)
+    static std::string CodetoDesc(int code)
     {
         switch(code){
             case 200:
@@ -134,7 +134,7 @@ public:
             }
             std::string sub_string_ = rq_head.substr(start,pos_ - start);
             if(!sub_string_.empty()){
-                ProtocolUtil::MakeKV(head_kv,substring_);
+                ProtocolUtil::MakeKV(head_kv,sub_string_);
             }
             else{
                 break;
@@ -145,8 +145,8 @@ public:
     int GetContentLength()
     {
         std::string cl_ = head_kv["Content-Length"];
-        if(!cl_empty()){
-            std::stingstream ss(cl_);
+        if(!cl_.empty()){
+            std::stringstream ss(cl_);
             ss >> content_length;
         }
             return content_length;
@@ -213,7 +213,7 @@ class Response{
         void MakeResponseHead(Request*&rq_)
         {
             rsp_head = "Content-Length: ";
-            rsp_head = ProtocolUtil::IntToString(rq_->GetResourceSize();
+            rsp_head = ProtocolUtil::IntToString(rq_->GetResourceSize());
             rsp_head = "\n";
         }
         ~Response()
@@ -264,11 +264,11 @@ class Connect{
         
         void RecvRequestText(std::string text_,int len_,std::string& param_)
         {
-            char c;
+            char c_;
             int i = 0;
             while(i < len_){
                 recv(sock,&c_,1,0);
-                text_.push_back(c);
+                text_.push_back(c_);
             }
 
             param_ = text_;
@@ -332,7 +332,7 @@ class Entry{
                 conn_->RecvRequestText(rq_->rq_text,rq_->GetContentLength(),rq_->GetParam());
             }
 
-           ProcessResponse(conn_,rq_,rsq_);
+           ProcessResponse(conn_,rq_,rsp_);
 
 end:
             if(code_ != OK){
