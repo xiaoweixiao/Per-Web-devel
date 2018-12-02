@@ -2,18 +2,21 @@
 #define __PROTOCOLUTIL_HPP__
 
 #include <iostream>
-#include <cstring>
-#include <arpa/inet.h>
-#include <sys/stat.h>
-#include <unordered_map>
 #include <string>
+#include <string.h>
+#include <strings.h>
 #include <sstream>
-#include <sys/types.h>      
-#include <sstream>
-#include <netinet/in.h>
-#include <sys/socket.h>
+#include <unordered_map>
 #include <unistd.h>
 #include <stdlib.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <netinet/in.h>
+#include <sys/sendfile.h>
+#include <sys/wait.h>
 #include "log.hpp"
 
 #define NOT_FOUND 404
@@ -28,14 +31,14 @@ public:
     static void MakeKV(std::unordered_map<std::string,std::string> &kv_,std::string &str_)
     {
         std::size_t pos_ = str_.find(": ");
-        if(std::string::npos ==pos_){
+        if(std::string::npos == pos_){
             return;
         }
 
         std::string k_ = str_.substr(0,pos_);
         std::string v_ = str_.substr(pos_+2);
 
-        kv_insert(make_pair(k_,v_));
+        kv_.insert(make_pair(k_,v_));
     }
     static std::string IntToString(int code)
     {
@@ -254,7 +257,7 @@ class Connect{
         {
             head_ = "";
             std::string line_;
-            while(line_ != '\n')
+            while(line_ != "\n")
             {
                 line_ = "";
                 RecvOneLine(line_);
