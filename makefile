@@ -4,7 +4,7 @@ cc=g++
 ldflags=-lpthread
 
 $(bin):$(src)
-	$(cc) -o $@ $^ $(ldflags)
+	$(cc) -o $@ $^ $(ldflags) -std=c++11
 
 .PHONY:clean
 clean:
