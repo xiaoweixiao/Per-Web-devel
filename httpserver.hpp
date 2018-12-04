@@ -52,8 +52,7 @@ public:
             }
 
             pthread_t tid;
-            int *sockp_ = new int;
-            sockp_ = &sock_;
+            int *sockp_ = &sock_;
             pthread_create(&tid,NULL,Entry::HandlerRequest,(void*)sockp_);
             LOG(INFO,"Get New Client ,Create Thread Handler Request!");
         }

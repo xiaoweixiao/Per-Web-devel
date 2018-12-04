@@ -113,6 +113,10 @@ class Request{
         {
             return resource_size;
         }
+        void SetResourceSize(int rs_)
+        {
+            resource_size = rs_;
+        }
         std::string GetSuffix()
         {
             return resource_suffix;
@@ -221,8 +225,8 @@ class Request{
                 }
             }
             resource_size = st.st_size;//资源长度
-            std::size_t pos_ = path.rfind(".");
-            if(std::string::npos == pos_)
+            std::size_t pos_ = path.find_last_of(".");
+            if(std::string::npos != pos_)
                 resource_suffix = path.substr(pos_);
             return true;
         }
@@ -353,14 +357,14 @@ class Connect{
         }
         void SendResponse(Response *&rsp_,Request *&rq_)
         {
+            send(sock,rsp_->rsp_line.c_str(),rsp_->rsp_line.size(),0);
+            send(sock,rsp_->rsp_head.c_str(),rsp_->rsp_head.size(),0);
+            send(sock,rsp_->blank.c_str(),rsp_->blank.size(),0);
             if(rq_->IsCgi())
             {
-
+                send(sock,rsp_->rsp_text.c_str(),rsp_->rsp_text.size(),0);
             }else
             {
-                send(sock,rsp_->rsp_line.c_str(),rsp_->rsp_line.size(),0);
-                send(sock,rsp_->rsp_head.c_str(),rsp_->rsp_head.size(),0);
-                send(sock,rsp_->blank.c_str(),rsp_->blank.size(),0);
                 sendfile(sock,rsp_->fd,NULL,rq_->GetResourceSize());
             }
         }
@@ -383,7 +387,68 @@ class Entry{
         }
         static void ProcessCgi(Connect *&conn_,Request *&rq_,Response *&rsp_)
         {
+            int &code_ =rsp_->code;
 
+            int input[2];
+            int output[2];
+            std::string &param_ = rq_->GetParam();
+
+            pipe(input);
+            pipe(output);
+
+            pid_t id = fork();
+            if(id < 0)
+            {
+                LOG(ERROR,"fork error");
+                code_ = NOT_FOUND;
+                return;
+            }else if(id == 0)
+            {
+                //child
+                close(input[1]);//虽然文件描述符依旧有效，文件描述符是由内核统一管理的，但是
+                close(output[0]);//程序替换后，数据段会被替换，所以需要将文件描述符重定向到0和1
+
+                dup2(input[0],0);
+                dup2(output[1],1);
+
+                std::string cl_env = "Content-Length=";
+                cl_env += ProtocolUtil::IntToString(param_.size());
+                putenv((char*)cl_env.c_str());
+
+                const std::string &path = rq_->GetPath();
+                execl(path.c_str(),path.c_str(),NULL);
+                exit(1);
+
+            }else
+            {
+                //parent
+                close(input[0]);
+                close(output[1]);
+
+                size_t size_ = param_.size();//总共需要写入管道的字节数
+                size_t total_ = 0;//累计写入管道的字节数
+                size_t curr_ = 0;//当前次写入的字节数
+                while(total_ < size_&&\
+                        (curr_ = write(input[1],param_.c_str() + total_,size_ - total_))>0)
+                {
+                    total_ += curr_;
+                }
+
+                char c_;
+                while(read(output[0],&c_,1) > 0)
+                {
+                    rsp_->rsp_text.push_back(c_);
+                }
+
+                waitpid(id,NULL,0);
+
+                close(input[1]);
+                close(output[0]);
+                rsp_->MakeStatusLine();
+                rq_->SetResourceSize(rsp_->rsp_text.size());
+                rsp_->MakeResponseHead(rq_);
+                conn_->SendResponse(rsp_,rq_);
+            }
         }
         static int ProcessResponse(Connect *&conn_,Request *&rq_,Response *&rsp_)
         {
@@ -395,7 +460,7 @@ class Entry{
                 ProcessNonCgi(conn_,rq_,rsp_);
             }
         }
-        static void* HandlerRequest(void*arg_)
+        static void* HandlerRequest(void* arg_)
         {
             int sock_ = *(int*)arg_;
             //delete (int*)arg_;
