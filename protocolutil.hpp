@@ -149,6 +149,9 @@ class Request{
                     path += uri.substr(0,pos_);//substr的第二个参数是截取的步长，
                     //下标为pos_的位置是‘？’截取到pos_之前，截取pos_个
                     param = uri.substr(pos_+1);
+                }else
+                {
+                    path += uri;
                 }
             }else
             {
@@ -176,10 +179,12 @@ class Request{
                     ProtocolUtil::MakeKV(head_kv,sub_string_);
                 }else
                 {
+
                     break;
                 }
                 start = pos_ + 1;
             }
+            return true;
         }
         int GetContentLength()
         {
@@ -223,7 +228,7 @@ class Request{
         }
         bool IsNeedRecvText()
         {
-            if(strcasecmp(method.c_str(),"POST"))
+            if(strcasecmp(method.c_str(),"POST") == 0)
             {
                 return true;
             }
@@ -256,9 +261,9 @@ class Response{
         void MakeStatusLine()
         {
             rsp_line = HTTP_VERSION;
-            rsp_line += "";
+            rsp_line += " ";
             rsp_line += ProtocolUtil::IntToString(code);
-            rsp_line += "";
+            rsp_line += " ";
             rsp_line += ProtocolUtil::CodetoDesc(code);
             rsp_line +="\n";
         }
@@ -376,11 +381,15 @@ class Entry{
             rsp_->OpenResource(rq_);
             conn_->SendResponse(rsp_,rq_);
         }
+        static void ProcessCgi(Connect *&conn_,Request *&rq_,Response *&rsp_)
+        {
+
+        }
         static int ProcessResponse(Connect *&conn_,Request *&rq_,Response *&rsp_)
         {
             if(rq_->IsCgi())
             {
-                //ProcessCgi();
+                ProcessCgi(conn_,rq_,rsp_);
             }else
             {
                 ProcessNonCgi(conn_,rq_,rsp_);
@@ -389,7 +398,7 @@ class Entry{
         static void* HandlerRequest(void*arg_)
         {
             int sock_ = *(int*)arg_;
-            delete (int*)arg_;
+            //delete (int*)arg_;
             Connect *conn_ =new Connect(sock_);
             Request *rq_ = new Request();
             Response *rsp_ = new Response();
