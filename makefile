@@ -5,15 +5,14 @@ ldflags=-lpthread
 
 .PHONY:all
 	
-all:$(bin) cgi
+all:$(bin)  Cal
 $(bin):$(src)
 	$(cc) -o $@ $^ $(ldflags) -std=c++11
 
-.PHONY:cgi
-
-cgi:
-	g++ -o TestCgi TestCgi.cc
-
 .PHONY:clean
 clean:
-	rm -rf $(bin)   TestCgi
+	rm -rf $(bin) Cal
+.PHONY:Cal
+
+Cal:Cal.cc
+	g++ -o Cal Cal.cc

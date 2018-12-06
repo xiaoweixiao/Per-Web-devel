@@ -346,11 +346,12 @@ class Connect{
         void RecvRequestText(std::string text_,int len_,std::string& param_)
         {
             char c_;
-            int i = 0;
-            while(i < len_)
+            int i_ = 0;
+            while(i_ < len_)
             {
                 recv(sock,&c_,1,0);
                 text_.push_back(c_);
+                i_++;
             }
 
             param_ = text_;
