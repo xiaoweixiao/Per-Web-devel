@@ -11,7 +11,7 @@ $(bin):$(src)
 
 .PHONY:clean
 clean:
-	rm -rf $(bin) Cal
+	rm -rf $(bin) ./wwwroot/Cal
 .PHONY:Cal
 
 Cal:Cal.cc

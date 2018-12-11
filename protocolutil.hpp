@@ -20,9 +20,13 @@
 #include "log.hpp"
 
 #define NOT_FOUND 404
+#define SERVER_ERROR 500
 #define OK 200
+#define BAD_REQUEST 400
+
 #define WEB_ROOT "wwwroot"
 #define HOME_PAGE "index.html"
+#define PAGE_404 "404.html"
 
 #define HTTP_VERSION "http/1.0"
 
@@ -64,8 +68,12 @@ class ProtocolUtil{
                     return "Ok";
                 case 404:
                     return "Not Found";
+                case 500:
+                    return "Internal Server Error";
+                case 400:
+                    return "Bad Request";
                 default:
-                    return "UNkonw";
+                    return "Unknow";
             }
         }
         static std::string SuffixToType(const std::string &suffix_)
@@ -117,9 +125,17 @@ class Request{
         {
             resource_size = rs_;
         }
+        void SetSuffix(std::string suffix_)
+        {
+            resource_suffix = suffix_;
+        }
         std::string GetSuffix()
         {
             return resource_suffix;
+        }
+        void SetPath(std::string&path_)
+        {
+             path = path_;
         }
         std::string &GetPath()
         {
@@ -151,7 +167,7 @@ class Request{
                 {
                     cgi = true;
                     path += uri.substr(0,pos_);//substr的第二个参数是截取的步长，
-                    //下标为pos_的位置是‘？’截取到pos_之前，截取pos_个
+                    //下标为pos_的位置是‘？’的前一个位置，截取pos_个(0~pos_1)
                     param = uri.substr(pos_+1);
                 }else
                 {
@@ -401,7 +417,7 @@ class Entry{
             if(id < 0)
             {
                 LOG(ERROR,"fork error");
-                code_ = NOT_FOUND;
+                code_ = SERVER_ERROR;
                 return;
             }else if(id == 0)
             {
@@ -461,11 +477,41 @@ class Entry{
                 ProcessNonCgi(conn_,rq_,rsp_);
             }
         }
+        static void Process404(Connect *&conn_,Request *&rq_,Response *&rsp_)
+        {
+            std::string path_ = WEB_ROOT;
+            path_+= "/";
+            path_+= PAGE_404;
+            struct stat st;
+            stat(path_.c_str(),&st);
+
+            rq_->SetResourceSize(st.st_size);
+            rq_->SetSuffix(".html");
+
+            rq_->SetPath(path_);
+
+            ProcessNonCgi(conn_,rq_,rsp_);
+        }
+        static void HandlerError(Connect *&conn_,Request *&rq_,Response *&rsp_)
+        {
+            int &code_=rsp_->code;
+            switch(code_){
+                case 400:
+                    break;
+                case 404:
+                    Process404(conn_,rq_,rsp_);
+                    break;
+                case 500:
+                    break;
+                case 503:
+                    break;
+            }
+        }
         static void* HandlerRequest(void* arg_)
         {
             int sock_ = *(int*)arg_;
             //delete (int*)arg_;
-            Connect *conn_ =new Connect(sock_);
+            Connect *conn_ = new Connect(sock_);
             Request *rq_ = new Request();
             Response *rsp_ = new Response();
 
@@ -474,13 +520,15 @@ class Entry{
             rq_->RequestLineParse();
             if( !rq_->IsMethodLegal() )
             {
-                code_ = NOT_FOUND;
+                conn_->RecvRequestHead(rq_->rq_head);
+                code_ = BAD_REQUEST;
                 goto end;
             }
 
             rq_->UriParse();
             if( !rq_->IsPathLegal())
             {
+                conn_->RecvRequestHead(rq_->rq_head);
                 code_ = NOT_FOUND;
                 goto end;
             }
@@ -490,10 +538,10 @@ class Entry{
             conn_->RecvRequestHead(rq_->rq_head);
             if( rq_->RequestHeadParse())
             {
-                LOG(INFO,"parse head done");
+                LOG(INFO,"Parse request head done");
             }else
             {
-                code_ = NOT_FOUND;
+                code_ = BAD_REQUEST;
                 goto end;
             }
 
@@ -508,7 +556,7 @@ class Entry{
 end:
             if(code_ != OK)
             {
-                //HandlerError(sock_);
+                HandlerError(conn_,rq_,rsp_);
             }
             delete conn_;
             delete rq_;
