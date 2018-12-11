@@ -480,8 +480,8 @@ class Entry{
         static void Process404(Connect *&conn_,Request *&rq_,Response *&rsp_)
         {
             std::string path_ = WEB_ROOT;
-            path_+= "/";
-            path_+= PAGE_404;
+            path_ += "/";
+            path_ += PAGE_404;
             struct stat st;
             stat(path_.c_str(),&st);
 
