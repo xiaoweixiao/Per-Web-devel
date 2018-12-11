@@ -1,26 +1,27 @@
 bin=httpserver
 src=httpserver.cc
 cc=g++
-ldflags=-lpthread
+LDflags=-lpthread
 
 .PHONY:all
 	
 all:$(bin)  Cal
+
 $(bin):$(src)
-	$(cc) -o $@ $^ $(ldflags) -std=c++11
+	$(cc) -o $@ $^ $(LDflags) -std=c++11
 
 .PHONY:clean
 clean:
-	rm -rf $(bin) ./wwwroot/Cal output
+	rm -rf $(bin) Cal output 
 
 .PHONY:Cal
-
 Cal:Cal.cc
 	g++ -o Cal Cal.cc
 
 .PHONY:output
+output:
 	mkdir output
 	cp $(bin) output
-	cp wwwroot output -rf
+	cp -rf wwwroot output 
 	cp start.sh output
 	cp Cal output/wwwroot

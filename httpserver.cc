@@ -1,4 +1,5 @@
 #include"httpserver.hpp"
+#include <signal.h>
 
 static void Usage(std::string pro_c)
 {
@@ -10,6 +11,8 @@ int main(int argc,char* argv[])
         Usage(argv[0]);
         exit(1);
     }
+
+    signal(SIGPIPE,SIG_IGN);
     HttpdServer *serp = new HttpdServer(atoi(argv[1]));
     serp->InitServer();
     serp->Start();
