@@ -2,14 +2,16 @@
 #define __HTTPDSERVER_HPP__
 
 #include"protocolutil.hpp"
+#include "Threadpool.hpp"
 #include<pthread.h>
 
 class HttpdServer{
 private:
     int listen_sock;
     int port;
+    ThreadPool *tp;
 public:
-    HttpdServer(int port_):port(port_),listen_sock(-1)
+    HttpdServer(int port_):port(port_),listen_sock(-1),tp(NULL)
     {}
 
     void InitServer()
@@ -37,6 +39,9 @@ public:
             exit(4);
         }
         LOG(INFO,"InitServer Success!");
+
+        tp = new ThreadPool();
+        tp->InitThreadPool();
     }
     void Start()
     {
@@ -51,10 +56,8 @@ public:
                 continue;
             }
 
-            pthread_t tid;
-            int *sockp_ = &sock_;
-            pthread_create(&tid,NULL,Entry::HandlerRequest,(void*)sockp_);
-            LOG(INFO,"Get New Client ,Create Thread Handler Request!");
+            Task t(sock_,Entry::HandlerRequest);
+            tp->PushTask(t);
         }
     }
     ~HttpdServer()

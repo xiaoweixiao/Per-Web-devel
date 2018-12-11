@@ -507,10 +507,8 @@ class Entry{
                     break;
             }
         }
-        static void* HandlerRequest(void* arg_)
+        static int HandlerRequest(int sock_)
         {
-            int sock_ = *(int*)arg_;
-            //delete (int*)arg_;
             Connect *conn_ = new Connect(sock_);
             Request *rq_ = new Request();
             Response *rsp_ = new Response();
@@ -561,6 +559,7 @@ end:
             delete conn_;
             delete rq_;
             delete rsp_;
+            return code_;
         }
 };
 #endif 

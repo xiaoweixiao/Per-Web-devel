@@ -11,8 +11,16 @@ $(bin):$(src)
 
 .PHONY:clean
 clean:
-	rm -rf $(bin) ./wwwroot/Cal
+	rm -rf $(bin) ./wwwroot/Cal output
+
 .PHONY:Cal
 
 Cal:Cal.cc
 	g++ -o Cal Cal.cc
+
+.PHONY:output
+	mkdir output
+	cp $(bin) output
+	cp wwwroot output -rf
+	cp start.sh output
+	cp Cal output/wwwroot
