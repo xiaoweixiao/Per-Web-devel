@@ -17,6 +17,7 @@ clean:
 .PHONY:Cal
 Cal:Cal.cc
 	g++ -o Cal Cal.cc
+	mv Cal wwwroot
 
 .PHONY:output
 output:
@@ -24,4 +25,3 @@ output:
 	cp $(bin) output
 	cp -rf wwwroot output 
 	cp start.sh output
-	cp Cal output/wwwroot

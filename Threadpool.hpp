@@ -97,6 +97,7 @@ class ThreadPool{
             task_queue.push(t_);
             pthread_cond_signal(&cond);
             pthread_mutex_unlock(&lock);
+            LOG(INFO,"Task push success");
         }
 
         void Stop()

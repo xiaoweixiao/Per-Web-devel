@@ -50,12 +50,14 @@ public:
             int sock_;
             struct sockaddr_in peer_;
             socklen_t len_=sizeof(peer_);
+            //int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen);
             sock_ = accept(listen_sock,(struct sockaddr*)&peer_,&len_);
             if(sock_ < 0){
                 LOG(WARNING,"accept error");
                 continue;
             }
 
+            LOG(INFO,"Accept success");
             Task t(sock_,Entry::HandlerRequest);
             tp->PushTask(t);
         }

@@ -25,7 +25,8 @@
 #define BAD_REQUEST 400
 
 #define WEB_ROOT "wwwroot"
-#define HOME_PAGE "index.html"
+//#define HOME_PAGE "index.html"
+#define HOME_PAGE "cal_index.html"
 #define PAGE_404 "404.html"
 
 #define HTTP_VERSION "http/1.0"
@@ -166,8 +167,7 @@ class Request{
                 if(pos_ != std::string::npos)
                 {
                     cgi = true;
-                    path += uri.substr(0,pos_);//substr的第二个参数是截取的步长，
-                    //下标为pos_的位置是‘？’的前一个位置，截取pos_个(0~pos_1)
+                    path += uri.substr(0,pos_);
                     param = uri.substr(pos_+1);
                 }else
                 {
@@ -193,7 +193,7 @@ class Request{
                 {
                     break;
                 }
-                std::string sub_string_ = rq_head.substr(start,pos_ - start);
+                std::string sub_string_ = rq_head.substr(start,pos_ - start);//
                 if(!sub_string_.empty())
                 {
                     ProtocolUtil::MakeKV(head_kv,sub_string_);
