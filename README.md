@@ -1,7 +1,7 @@
 # 自主Web服务器小项目
 **使用技术：线程池、unorder_map**
 
-**开发环境：**Centos7.0**
+**开发环境：Centos7.0**
 
 **使用工具：vim、g++、shell、makefile**
 ## 项目成果
