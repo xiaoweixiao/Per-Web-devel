@@ -28,15 +28,15 @@
 ![image text](https://github.com/xiaoweixiao/HTTP/blob/master/picture/post_cal.png)
 
 ## 服务器启动使用说明
-**关闭防火墙
+**关闭防火墙**
 ```
 sudo systemctl stop firewalld
 ```
-**执行编译脚本
+**执行编译脚本**
 ```
 ./build.sh
 ```
-**启动服务器脚本
+**启动服务器脚本**
 ```
 ./start.sh
 ```
