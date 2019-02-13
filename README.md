@@ -1,6 +1,7 @@
 # 自主Web服务器小项目
 **使用技术：线程池、unorder_map**
 
+**开发环境：**Centos7.0
 **使用工具：vim、g++、shell、makefile**
 ## 项目成果
 **1. 实现了tcp端口复用**
@@ -24,3 +25,17 @@
 ![image text](https://raw.githubusercontent.com/xiaoweixiao/HTTP/master/picture/post_cal2.png)
 #### 使用本地浏览器采用POST方法实现CGI请求结果
 ![image text](https://github.com/xiaoweixiao/HTTP/blob/master/picture/post_cal.png)
+
+## 服务器启动使用说明
+**关闭防火墙
+```
+sudo systemctl stop firewalld
+```
+**执行编译脚本
+```
+./build.sh
+```
+**启动服务器脚本
+```
+./start.sh
+```
