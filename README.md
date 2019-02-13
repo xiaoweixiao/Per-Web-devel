@@ -14,4 +14,13 @@
 **对于http协议更加熟悉，对于web服务器的连接访问有了一定掌握，使用C和C++混编的形式，对C++的类和对象有了更深层次的认识，对于线程有了更加清晰的认识。**
 
 ## 部分截图
+#### 404
 ![image text](https://raw.githubusercontent.com/xiaoweixiao/HTTP/master/picture/404.png)
+#### POST方法的CGI计算器
+![image text](https://github.com/xiaoweixiao/HTTP/blob/master/picture/POST.png)
+#### 解析其它html文件
+![image text](https://github.com/xiaoweixiao/HTTP/blob/master/picture/html.png)
+#### 使用本地浏览器采用POST方法实现CGI请求
+![image text](https://raw.githubusercontent.com/xiaoweixiao/HTTP/master/picture/post_cal2.png)
+#### 使用本地浏览器采用POST方法实现CGI请求结果
+![image text](https://github.com/xiaoweixiao/HTTP/blob/master/picture/post_cal.png)
