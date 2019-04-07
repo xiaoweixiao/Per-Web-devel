@@ -25,8 +25,8 @@
 #define BAD_REQUEST 400
 
 #define WEB_ROOT "wwwroot"
-//#define HOME_PAGE "index.html"
-#define HOME_PAGE "cal_index.html"
+#define HOME_PAGE "index.html"
+//#define HOME_PAGE "cal_index.html"
 #define PAGE_404 "404.html"
 
 #define HTTP_VERSION "http/1.0"

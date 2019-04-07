@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>向上的人很可爱</title>
+	<style type='text/css'>
+		ul{
+			list-style: none;
+		}
+		li{
+			color:#f40;
+			float: left;
+			font-weight:bold;
+			font-size: 14px;
+			height:30px;
+			line-height: 30px;
+			padding:0 5px;
+		}
+		li:hover{
+			border-radius: 15px;
+			background-color: #f40;
+			color: #fff;
+		}
+	</style>
+</head>
+
+<body>
+<table width="1540" border="10">
+<tr>
+<td colspan="2" style="background-color:#eeeeee;">
+<h1 align="center">一个后端学习者用来介绍项目的简单网页</h1>
+</td>
+</tr>
+
+<tr>
+<td style="background-color:#eeeeee;width:160px;vertical-align:top;">
+<ul>
+	<h4><b><font color="red">博文链接</font></b></h4>
+	<li><a href="https://blog.csdn.net/vickers_xiaowei/article/category/8607345">进程</a></li><br><br>
+	<li><a href="https://blog.csdn.net/vickers_xiaowei/article/category/7950584">操作系统</a></li><br><br>
+	<li><a href="https://blog.csdn.net/vickers_xiaowei/article/category/8607342">计算机网络</a></li><br><br>
+	<li><a href="https://blog.csdn.net/vickers_xiaowei/article/category/8059608">C/C++/数据结构</a></li><br><br>
+	<br><br><br><br>
+
+	<h4><b><font color="red">Git仓库链接</font></b></h4>
+<li><a href="https://github.com/xiaoweixiao/HTTP">Web服务器</a></li><br><br>
+<li><a href="https://github.com/xiaoweixiao/doc_search">boost库搜索</a></li><br><br>
+<li><a href="https://github.com/xiaoweixiao/Linux">Linux网络编程</a></li><br><br>
+	<li><a href="https://github.com/xiaoweixiao/Cpp">C/C++/数据结构</a></li><br><br>
+
+</ul>
+</td>
+
+<td style="background-color:white;height:580px；vertical-align:top;">
+
+<div>
+	<h3 align="center">Web网站后端数据处理大致流程</h3>
+<p>朋友你好，欢迎你访问我的网站。我叫张威，一名在校大学生。这是我的网页，我是一名准C++程序员。你所看到
+的网页是由我的C++Web服务器解析处理响应的。</p>
+<p>如果你了解C++，那么我简单介绍一下，我的这个服务器：服务器是应用层程序，传输层采用TCP通信，一旦有客
+户端connect我的服务器，服务器accept之后，服务器的server对象接收客户端的socket，构建task对象，并将
+任务添加到任务队列中，任务队列在互斥锁条件变量的保护下由线程池的任务线程按序处理。任务队列有任务，任务
+线程自主将任务取出并进行任务处理。</p>
+<p>任务处理函数首先对socket的请求信息进行解析，分别将请求行、报头、请求参数记录到request对象，检测请
+求方法请求路径合法后，分CGI处理和非CGI处理，CGI部分创建子进程来执行CGI代码，父子进程利用匿名管道通
+信。</p>
+<p>响应部分，则按照请求信息以及处理结果，构建了response对象，进行响应。</p>
+<p>更多详细介绍 <a href="https://github.com/xiaoweixiao/HTTP">GitHub代码链接</a>
+<a href="https://blog.csdn.net/Vickers_xiaowei/article/details/87178341">博客项目总结</a></p>
+
+	<div align="center">
+		<h3><font color="blue">CGI计算器请求页面</font></h3>
+        <img src="/picture/post_cal2.png" width="1000">
+	</div>
+</div>
+
+</td>
+</tr>
+
+<tr>
+<td colspan="2" style="background-color:#FFA500;text-align:center;">
+版权声明：用于学习的产品，如若侵权请告知！</td>
+</tr>
+</table>
+</body>
+</html>
