@@ -7,6 +7,7 @@ static void Usage(std::string pro_c)
 }
 int main(int argc,char* argv[])
 {
+    daemon(1,1);
     if(argc != 2){
         Usage(argv[0]);
         exit(1);
