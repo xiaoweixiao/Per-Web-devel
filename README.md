@@ -1,4 +1,5 @@
 # Personnal Web Develpment
+#### 网站链接：http://132.232.146.198:8080/
 **使用技术：线程池、进程间通信、进程替换、unordered_map**
 
 **开发环境：Centos7.0**
@@ -17,15 +18,15 @@
 
 ## 部分截图
 #### 404
-![image text](https://raw.githubusercontent.com/xiaoweixiao/HTTP/master/picture/404.png)
+![image text](https://github.com/xiaoweixiao/Per-Web-devel/blob/master/picture/404.png)
 #### POST方法的CGI计算器
-![image text](https://github.com/xiaoweixiao/HTTP/blob/master/picture/POST.png)
+![image text](https://github.com/xiaoweixiao/Per-Web-devel/blob/master/picture/POST.png)
 #### 解析其它html文件
-![image text](https://github.com/xiaoweixiao/HTTP/blob/master/picture/html.png)
-#### 使用本地浏览器采用POST方法实现CGI请求
-![image text](https://raw.githubusercontent.com/xiaoweixiao/HTTP/master/picture/post_cal2.png)
-#### 使用本地浏览器采用POST方法实现CGI请求结果
-![image text](https://github.com/xiaoweixiao/HTTP/blob/master/picture/post_cal.png)
+![image text](https://github.com/xiaoweixiao/Per-Web-devel/blob/master/picture/html.png)
+#### 采用POST方法实现CGI请求
+![image text](https://github.com/xiaoweixiao/Per-Web-devel/blob/master/picture/post_cal.png)
+#### 采用POST方法实现CGI请求结果
+![image text](https://github.com/xiaoweixiao/Per-Web-devel/blob/master/picture/post_cal2.png)
 
 ## 服务器启动使用说明
 **关闭防火墙**
