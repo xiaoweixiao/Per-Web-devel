@@ -1,5 +1,4 @@
 # Personnal Web Develpment
-#### 网站链接：http://132.232.146.198:8080/
 **使用技术：线程池、进程间通信、进程替换、unordered_map**
 
 **开发环境：Centos7.0**
